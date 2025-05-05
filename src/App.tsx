@@ -1,12 +1,24 @@
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { AuthLayout, Login, Register } from './pages'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const router = useMemo(()=> createBrowserRouter([
+    {
+      path: '/',
+      element: <AuthLayout/>,
+      children: [
+        {index: true, element:<Login/>},
+        {path: "register", element:<Register/>},
+      ]
+    },
+    {path: '*', element: <Navigate to={'/'} replace/>}
+  ]),[])
 
   return (
-    <div className='bg-red-400' onClick={()=>setCount((count)=>count + 1)}>
-     Count {count}
-    </div>
+    <RouterProvider router={router}>
+    </RouterProvider>
   )
 }
 
